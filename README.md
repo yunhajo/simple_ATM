@@ -104,7 +104,7 @@ depositing into account, withdrawing from the acoount.
 #### 3. Balance
 
 If you click on balance, you can check your account balance.
-![options](images/options.png)
+![balance](images/balance.png)
 
 #### 4. Deposit
 
@@ -119,7 +119,7 @@ If you click on withdrawl, then you can withdraw money from your account.
 ![withdrawl from account](images/withdraw.png)
 
 Here's the screen after successful deposit:
-![after withdrawl](images/after_withdra.png)
+![after withdrawl](images/after_withdraw.png)
 
 If you try to withdraw amount greater than your account balance, the ATM will throw an error.
 ![withdrawl error](images/withdraw_100000.png)
