@@ -123,3 +123,4 @@ Here's the screen after successful deposit:
 
 If you try to withdraw amount greater than your account balance, the ATM will throw an error.
 ![withdrawl error](images/withdraw_100000.png)
+![withdrawl error](images/insufficient_funds.png)
