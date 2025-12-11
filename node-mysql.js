@@ -157,6 +157,7 @@ async function withdraw(db, cardnumber, amount) {
  * their account information
  */
 app.post("/authenticate", async (req, res) => {
+    console.log("correct call to post");
     let cardnumber = req.body.cardnumber;
     let pin = req.body.pin;
     let db;
@@ -183,6 +184,7 @@ app.post("/authenticate", async (req, res) => {
         res.status(401).send("Invalid login credentials.");
       }
     } catch (error) {
+      console.error("Error in /authenticate:", err);
       res.type("text");
       res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
     }
@@ -198,10 +200,10 @@ app.post("/authenticate", async (req, res) => {
 async function getDB() {
   let db = await mysql.createConnection({
     // Variables for connections to the database.
-    host: "localhost",      
-    port: "3306",          
-    user: "appclient",         
-    password: "clientpw",    
+    host: "localhost",
+    port: 3306,
+    user: "appadmin",
+    password: "adminpw",
     database: "bank"
   });
   return db;

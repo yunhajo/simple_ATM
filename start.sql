@@ -4,3 +4,4 @@ CREATE DATABASE bank;
 USE bank;
 source setup.sql;
 source load-data.sql;
+source grant-permissions.sql;
