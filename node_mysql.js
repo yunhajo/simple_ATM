@@ -156,11 +156,12 @@ async function withdraw(db, cardnumber, amount) {
  * "Login" function that allows users to access 
  * their account information
  */
-app.post("/login", async (req, res) => {
+app.post("/authenticate", async (req, res) => {
+    let cardnumber = req.body.cardnumber;
+    let pin = req.body.pin;
     let db;
     try {
       db = await getDB();
-      const { cardnumber, pin } = req.body;
 
       let [rows] = await db.query(
         "SELECT pin_hash FROM accounts WHERE card_number = ?",
@@ -172,7 +173,7 @@ app.post("/login", async (req, res) => {
       }
 
       let valid = bcrypt.compare(pin, rows.pin_has);
-      
+
       if (valid) {
         res.cookie("cardnumber", cardnumber, { maxAge: COOKIE_EXP_TIME });
         res.type("text");
