@@ -119,7 +119,7 @@ If you click on withdrawl, then you can withdraw money from your account.
 ![withdrawl from account](images/withdraw.png)
 
 Here's the screen after successful deposit:
-![after withdrawl](images/after_withdrawl.png)
+![after withdrawl](images/after_withdra.png)
 
 If you try to withdraw amount greater than your account balance, the ATM will throw an error.
 ![withdrawl error](images/withdraw_100000.png)
