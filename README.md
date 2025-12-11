@@ -36,8 +36,12 @@ You must initialize the database and set up permissions before starting the appl
 Connect to your MySQL server as the root user:
 
 ```bash
-mysql -u root -p
+mysql --local-infile=1 -u root -p
 ```
+
+#### B. Database Setup
+
+Source necessary files for database setup:
 
 ```bash
 # 1. Database creation and context setting
@@ -77,3 +81,45 @@ Use the following card numbers and corresponding PINs to test the transactions (
 | J P | 4920183492341290 | 9304 |
 | M C | 1719238471239845 | 1189 |
 | H L | 4539129934128876 | 5502 |
+
+### 6. Example Runthrough
+
+#### 1. Home Page
+The front page of ATM website looks like the follwing. 
+
+![index](images/index.png)
+
+Once you enter credit card information and PIN number, you move to options page.
+
+Invalid credentials will result in an error.
+
+![error page](images/invalid.png)
+
+#### 2. Options Page
+![options](images/options.png)
+
+Currently, the website supports three different functionalities: checking balance,
+depositing into account, withdrawing from the acoount.
+
+#### 3. Balance
+
+If you click on balance, you can check your account balance.
+![options](images/options.png)
+
+#### 4. Deposit
+
+If you click on deposit, then you can deposit money into your account.
+![depositing into account](images/deposit_30_dollars.png)
+
+Here's the screen after successful deposit:
+![after deposit](images/after_deposit.png)
+
+#### 5. Withdrawl
+If you click on withdrawl, then you can withdraw money from your account.
+![withdrawl from account](images/withdraw.png)
+
+Here's the screen after successful deposit:
+![after withdrawl](images/after_withdrawl.png)
+
+If you try to withdraw amount greater than your account balance, the ATM will throw an error.
+![withdrawl error](images/withdraw_100000.png)
