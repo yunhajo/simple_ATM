@@ -36,7 +36,11 @@
                 method : "POST",
                 body : JSON.stringify(params)
             });
-            resp = checkStatus(resp);
+            if (!resp.ok) {
+                const msg = await resp.text(); 
+                handleError(msg); 
+                return;
+            }
             const msg = await resp.text();
             console.log("Success:", msg);
     
@@ -53,9 +57,10 @@
      * @param {String} errMsg - error message in string format
      */
     function handleError(errMsg) {
+        id("error").innerHTML = "";
         let text = gen("h2");
         text.textContent = errMsg;
-        id("login-form").appendChild(text);
+        id("error").appendChild(text);
     }
 
     init();

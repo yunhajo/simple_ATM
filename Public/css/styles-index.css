@@ -25,6 +25,12 @@ h1 {
     margin-right: 50px;
 }
 
+h2 {
+    font-family: "Google Sans", sans-serif;
+    font-size: 30pt;
+    margin-top: 40px;
+}
+
 #login-form {
     font-family: "Google Sans", sans-serif;
     display: flex;

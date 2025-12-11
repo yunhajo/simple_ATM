@@ -46,7 +46,7 @@
             
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
-            balanceID.textContent = "Your new balance is " + data.balance;
+            balanceID.textContent = "Your new balance is $" + data.balance;
 
             balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
@@ -60,7 +60,7 @@
      * @param {String} errMsg - error message in string format
      */
     function handleError(errMsg) {
-        document.getElementById("form").innerHTML = "";
+        id("form").innerHTML = "";
         let text = gen("h2");
         text.textContent = errMsg;
         id("container").appendChild(text);

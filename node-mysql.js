@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(multer().none());
 
 app.use(cookieParser());
-const COOKIE_EXP_TIME = 5 * 60 * 1000; // login cookies last 5 minutes.
+const COOKIE_EXP_TIME = 3 * 60 * 1000; // login cookies last 3 minutes.
 
 const DEBUG = true;
 const SERVER_ERROR = "Something went wrong on the server... Please try again later.";
@@ -168,8 +168,10 @@ async function withdraw(db, cardnumber, amount) {
  * their account information
  */
 app.post("/authenticate", async (req, res) => {
+    
     let cardnumber = req.body.cardnumber;
     let pin = req.body.pin;
+    console.log(pin);
     let db;
     try {
       db = await getDB();
@@ -183,7 +185,8 @@ app.post("/authenticate", async (req, res) => {
         return res.status(CLIENT_ERR_CODE).send({ error: "Invalid card number." });
       }
 
-      let valid = bcrypt.compare(pin, rows[0].pin_hash);
+      let valid = await bcrypt.compare(pin, rows[0].pin_hash);
+      console.log(valid);
 
       if (valid) {
         res.cookie("cardnumber", cardnumber, { maxAge: COOKIE_EXP_TIME });
