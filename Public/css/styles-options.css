@@ -1,0 +1,46 @@
+/*
+ * CSS file for options.html
+ */
+
+.container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;        
+    width: 100%;
+}
+
+.left {
+    width: 35%;   
+    background: lightgray;
+    padding: 20px;
+    padding-left: 50px;
+    font-size: 50pt;
+    border-radius: 2%;
+    margin: 20px;
+    margin-left: 50px;
+}
+
+.right {
+    display: flex;
+    flex-direction: column; 
+    width:35%;             
+    font-size: 50pt;
+    margin: 20px;
+    margin-right: 50px;
+    text-align: right;
+    text-decoration: none;
+}
+
+.right div {
+    background: lightgray;
+    padding: 20px;
+    padding-right: 45px;
+    margin-bottom: 50px;
+    font-size: 50pt;
+    border-radius: 2%;   
+}
+
+a {        
+    text-decoration: none;    
+}

@@ -1,3 +1,7 @@
+/*
+ * CSS file for index.html (home)
+ */
+
 body {
     display: flex;
     flex-direction: column;
@@ -12,14 +16,17 @@ main {
 }
 
 h1 {
-    font-family: "Anton", sans-serif;
+    font-family: "Google Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 80pt;
     color: #0F084B;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 #login-form {
+    font-family: "Google Sans", sans-serif;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -31,23 +38,30 @@ h1 {
     justify-content: space-between;
     align-items: center;
     margin: 10px;
-    font-size: 30pt;
+    font-size: 40pt;
 }
 
 .form-row label {
-    width:300px;           
+    width:500px;           
     font-weight: 500;
 }
 
 .form-row input {
     flex: 1;
-    font-size: 18px;         
+    font-size: 20px;         
     padding: 8px 10px;       
-    height: 36px;            
+    height: 40px; 
+    width: 350px;           
     box-sizing: border-box;  
 }
 
 #buttons-bar {
     margin-top: 15px;
-    text-align: center;      
+    text-align: center;     
+}
+
+#auth-button {
+    font-size: 30px;
+    height: 40px;
+    width: 100px; 
 }

@@ -19,6 +19,7 @@
      * trying to log into their account
      */
     async function authenticate() {
+        console.log("inside login");
         let params = {cardnumber: qs("input[name='cardnumber']").value, 
         pin: qs("input[name='pin']").value,};
 

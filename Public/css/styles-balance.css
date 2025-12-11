@@ -1,0 +1,38 @@
+/*
+ * CSS file for balance.html
+ */
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-family: "Google Sans", sans-serif;
+}
+
+h1 {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 80pt;
+    color: #0F084B;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#container {
+    font-size: 30pt;
+    margin: 50px;
+}
+
+#return {
+    font-size: 30pt;
+    position: fixed;   
+    bottom: 100px;
+    left: 40%;
+}
