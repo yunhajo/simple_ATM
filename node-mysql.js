@@ -5,8 +5,6 @@ const multer = require("multer");
 const mysql = require('mysql2/promise');
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-// const saltRounds = 12;
-// const pinHash = await bcrypt.hash(pin, saltRounds);
 
 // To handle different POST formats
 app.use(express.urlencoded({ extended: true }));
@@ -61,18 +59,17 @@ async function getAccountBalance(db, cardnumber) {
  */
 app.post("/deposit", async (req, res) => {
 
-    console.log("call to deposit");
     let db;
     try {
       db = await getDB();
       let amount = req.body.amount;
+
       let cardnumber = req.cookies.cardnumber;
-      console.log(cardnumber);
   
       let newBalance = await deposit(db, cardnumber, amount);
-      console.log("got new balance" + newBalance);
+
       res.json({ balance: newBalance });
-      // console.log("should not have gotten here");
+
     } catch (error) {
       res.type("text");
       res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
@@ -87,27 +84,24 @@ app.post("/deposit", async (req, res) => {
  */
 
 async function deposit(db, cardnumber, amount) {
-    console.log("console.log deposit helper called 1");
 
     let [result] = await db.query(
         "SELECT balance FROM accounts WHERE card_number = ?",
         [cardnumber]
     );
-    console.log(result);
+
     let before = parseInt(result[0].balance, 10);
     let after = before + parseInt(amount,10);
-    console.log("console.log deposit helper called 2");
+
     await db.query(
         "UPDATE accounts SET balance = ? WHERE card_number = ?",
         [after, cardnumber]
     );
-    console.log("console.log deposit helper called 3");
+
     await db.query(
         "INSERT INTO transactions (card_number, date, balance_before, balance_after) VALUES (?, NOW(), ?, ?)",
         [cardnumber, before, after]
     );
-    console.log("console.log deposit helper called 4");
-    console.log(after);
 
     return after;
 }
@@ -125,8 +119,14 @@ app.post("/withdraw", async (req, res) => {
       let newBalance = await withdraw(db, cardnumber, amount);
       res.json({ balance: newBalance });
     } catch (error) {
-      res.type("text");
-      res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
+      if (error.message === "Insufficient funds") {
+        res.type("text");
+        res.status(CLIENT_ERR_CODE).send(error.message);
+      }
+      else {
+        res.type("text");
+        res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
+      }
     }
     if (db) {
       db.end();
@@ -168,7 +168,6 @@ async function withdraw(db, cardnumber, amount) {
  * their account information
  */
 app.post("/authenticate", async (req, res) => {
-    console.log("correct call to post");
     let cardnumber = req.body.cardnumber;
     let pin = req.body.pin;
     let db;
@@ -179,10 +178,9 @@ app.post("/authenticate", async (req, res) => {
         "SELECT pin_hash FROM accounts WHERE card_number = ?",
         [cardnumber]
       );
-      console.log(rows);
 
       if (rows.length === 0) {
-        return res.status(401).json({ error: "Invalid card number" });
+        return res.status(CLIENT_ERR_CODE).send({ error: "Invalid card number." });
       }
 
       let valid = bcrypt.compare(pin, rows[0].pin_hash);
@@ -193,7 +191,7 @@ app.post("/authenticate", async (req, res) => {
         res.send(`Success`);
       }
       else {
-        res.status(401).send("Invalid login credentials.");
+        res.status(CLIENT_ERR_CODE).send("Invalid PIN.");
       }
     } catch (error) {
       console.error("Error in /authenticate:", error);
@@ -206,9 +204,8 @@ app.post("/authenticate", async (req, res) => {
   });
 
 /**
-  * Error Handler function
+  * Connects to Database
  */
-
 async function getDB() {
   let db = await mysql.createConnection({
     // Variables for connections to the database.
@@ -221,6 +218,9 @@ async function getDB() {
   return db;
 }
 
+/**
+  * Error Handler function
+ */
 function errorHandler(err, req, res, next) {
   if (DEBUG) {
     console.error(err);

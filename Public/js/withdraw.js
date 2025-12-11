@@ -19,8 +19,12 @@
      * calls a function to populate the product display.
      */
     async function makeWithdrawl() {
-        console.log("makeWithdrawl being called");
-        let params = {amount: qs("input[name='amount']").value};
+        let amount = qs("input[name='amount']").value;
+        if (!amount) {
+            handleError("Please enter a number");
+            return;
+        }
+        let params = {amount: amount};
         try {
             let url = BASE_URL + "withdraw";
             let resp = await fetch(url, { 
@@ -30,13 +34,20 @@
                 method : "POST",
                 body : JSON.stringify(params)
             });
-            resp = checkStatus(resp);
+            if (!resp.ok) {
+                const msg = await resp.text(); 
+                handleError(msg); 
+                return;
+            }
+
             const data = await resp.json();
-            console.log("hiii" + data.balance);
+
             document.getElementById("form").innerHTML = "";
+            
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
             balanceID.textContent = "Your new balance is " + data.balance;
+
             balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
         } catch (err) {
@@ -49,6 +60,7 @@
      * @param {String} errMsg - error message in string format
      */
     function handleError(errMsg) {
+        document.getElementById("form").innerHTML = "";
         let text = gen("h2");
         text.textContent = errMsg;
         id("container").appendChild(text);

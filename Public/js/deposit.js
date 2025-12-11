@@ -18,8 +18,12 @@
      * Makes a fetch call to the API to handle deposit
      */
     async function makeDeposit() {
-        console.log("make deposit being called");
-        let params = {amount: qs("input[name='amount']").value};
+        let amount = qs("input[name='amount']").value;
+        if (!amount) {
+            handleError("Please enter a number");
+            return;
+        }
+        let params = {amount: amount};
         try {
             let url = BASE_URL + "deposit";
             let resp = await fetch(url, { 
@@ -31,11 +35,13 @@
             });
             resp = checkStatus(resp);
             const data = await resp.json();
-            console.log("hiii" + data.balance);
+
             document.getElementById("form").innerHTML = "";
+
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
             balanceID.textContent = "Your new balance is " + data.balance;
+            
             balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
         } catch (err) {
@@ -48,6 +54,7 @@
      * @param {String} errMsg - error message in string format
      */
     function handleError(errMsg) {
+        document.getElementById("form").innerHTML = "";
         let text = gen("h2");
         text.textContent = errMsg;
         id("container").appendChild(text);

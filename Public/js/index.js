@@ -19,9 +19,14 @@
      * trying to log into their account
      */
     async function authenticate() {
-        console.log("inside login");
-        let params = {cardnumber: qs("input[name='cardnumber']").value, 
-        pin: qs("input[name='pin']").value,};
+        let cardnum = qs("input[name='cardnumber']").value;
+        let pin = qs("input[name='pin']").value;
+        if (!(cardnum && pin)) {
+            handleError("You must enter card and PIN numbers");
+            return;
+        }
+        let params = {cardnumber: cardnum, 
+        pin: pin,};
 
         try {
             let resp = await fetch(BASE_URL + "authenticate", { 

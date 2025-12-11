@@ -16,10 +16,11 @@
             let resp = await fetch(url);
             resp = checkStatus(resp);
             const data = await resp.json();
-            console.log(data[0]);
+
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
             balanceID.textContent = "$" + data[0][0].balance;
+            
             balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
         } catch (err) {

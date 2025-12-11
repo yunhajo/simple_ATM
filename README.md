@@ -1,6 +1,6 @@
 # simple_ATM
 
-npm install express multer bcrypt promise-mysql cookie-parser
+npm install express multer bcrypt mysql2 cookie-parser
 
 Sooyeon Kim — 4539123498123456, 4821
 Junho Park — 9304
