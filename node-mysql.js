@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 const multer = require("multer");
-const mysql = require("promise-mysql");
+const mysql = require('mysql2/promise');
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 // const saltRounds = 12;
@@ -60,20 +60,25 @@ async function getAccountBalance(db, cardnumber) {
  * Deposits into account
  */
 app.post("/deposit", async (req, res) => {
+
+    console.log("call to deposit");
     let db;
     try {
       db = await getDB();
       let amount = req.body.amount;
       let cardnumber = req.cookies.cardnumber;
+      console.log(cardnumber);
   
       let newBalance = await deposit(db, cardnumber, amount);
+      console.log("got new balance" + newBalance);
       res.json({ balance: newBalance });
+      // console.log("should not have gotten here");
     } catch (error) {
       res.type("text");
       res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
     }
     if (db) {
-      db.end();
+      await db.end();
     }
   });
 
@@ -82,23 +87,27 @@ app.post("/deposit", async (req, res) => {
  */
 
 async function deposit(db, cardnumber, amount) {
+    console.log("console.log deposit helper called 1");
 
     let [result] = await db.query(
         "SELECT balance FROM accounts WHERE card_number = ?",
         [cardnumber]
     );
-    let before = result.balance;
-    let after = before + amount;
-
+    console.log(result);
+    let before = parseInt(result[0].balance, 10);
+    let after = before + parseInt(amount,10);
+    console.log("console.log deposit helper called 2");
     await db.query(
         "UPDATE accounts SET balance = ? WHERE card_number = ?",
         [after, cardnumber]
     );
-
+    console.log("console.log deposit helper called 3");
     await db.query(
         "INSERT INTO transactions (card_number, date, balance_before, balance_after) VALUES (?, NOW(), ?, ?)",
         [cardnumber, before, after]
     );
+    console.log("console.log deposit helper called 4");
+    console.log(after);
 
     return after;
 }
@@ -133,24 +142,26 @@ async function withdraw(db, cardnumber, amount) {
         "SELECT balance FROM accounts WHERE card_number = ?",
         [cardnumber]
     );
-    let before = result.balance;
+    amount = parseInt(amount, 10);
+    let before = parseInt(result[0].balance, 10);
 
     if (before < amount) {
         throw new Error("Insufficient funds");
     }
     let after = before - amount;
+    let after_str = after.toString();
 
     await db.query(
         "UPDATE accounts SET balance = ? WHERE card_number = ?",
-        [after, cardnumber]
+        [after_str, cardnumber]
     );
 
     await db.query(
         "INSERT INTO transactions (card_number, date, balance_before, balance_after) VALUES (?, NOW(), ?, ?)",
-        [cardnumber, before, after]
+        [cardnumber, before, after_str]
     );
 
-    return after;
+    return after_str;
 }
 /**
  * "Login" function that allows users to access 
@@ -168,12 +179,13 @@ app.post("/authenticate", async (req, res) => {
         "SELECT pin_hash FROM accounts WHERE card_number = ?",
         [cardnumber]
       );
+      console.log(rows);
 
-      if (!rows) {
+      if (rows.length === 0) {
         return res.status(401).json({ error: "Invalid card number" });
       }
 
-      let valid = bcrypt.compare(pin, rows.pin_has);
+      let valid = bcrypt.compare(pin, rows[0].pin_hash);
 
       if (valid) {
         res.cookie("cardnumber", cardnumber, { maxAge: COOKIE_EXP_TIME });
@@ -184,7 +196,7 @@ app.post("/authenticate", async (req, res) => {
         res.status(401).send("Invalid login credentials.");
       }
     } catch (error) {
-      console.error("Error in /authenticate:", err);
+      console.error("Error in /authenticate:", error);
       res.type("text");
       res.status(SERVER_ERR_CODE).send(SERVER_ERROR);
     }

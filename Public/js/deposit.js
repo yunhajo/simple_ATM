@@ -8,22 +8,35 @@
     const BASE_URL = "/";
 
     function init() {
-        id("deposit-button").addEventListener("click", makeDeposit);
+        id("enter").addEventListener("click", (e) => {
+            e.preventDefault();
+            makeDeposit();
+        });
     }
 
     /**
      * Makes a fetch call to the API to handle deposit
      */
     async function makeDeposit() {
+        console.log("make deposit being called");
+        let params = {amount: qs("input[name='amount']").value};
         try {
             let url = BASE_URL + "deposit";
-            let resp = await fetch(url);
+            let resp = await fetch(url, { 
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method : "POST",
+                body : JSON.stringify(params)
+            });
             resp = checkStatus(resp);
             const data = await resp.json();
+            console.log("hiii" + data.balance);
+            document.getElementById("form").innerHTML = "";
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
-            balanceID.textContent = data;
-            balanceDiv.appendChild(classesID);
+            balanceID.textContent = "Your new balance is " + data.balance;
+            balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
         } catch (err) {
             handleError(err);

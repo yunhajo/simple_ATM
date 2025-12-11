@@ -8,7 +8,10 @@
     const BASE_URL = "/";
 
     function init() {
-        id("withdraw-button").addEventListener("click", makeWithdrawl);
+        id("enter").addEventListener("click", (e) => {
+            e.preventDefault();
+            makeWithdrawl();
+        });
     }
 
     /**
@@ -16,15 +19,25 @@
      * calls a function to populate the product display.
      */
     async function makeWithdrawl() {
+        console.log("makeWithdrawl being called");
+        let params = {amount: qs("input[name='amount']").value};
         try {
             let url = BASE_URL + "withdraw";
-            let resp = await fetch(url);
+            let resp = await fetch(url, { 
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method : "POST",
+                body : JSON.stringify(params)
+            });
             resp = checkStatus(resp);
             const data = await resp.json();
+            console.log("hiii" + data.balance);
+            document.getElementById("form").innerHTML = "";
             let balanceDiv = gen("div");
             let balanceID = gen("h2");
-            balanceID.textContent = data;
-            balanceDiv.appendChild(classesID);
+            balanceID.textContent = "Your new balance is " + data.balance;
+            balanceDiv.appendChild(balanceID);
             id("container").appendChild(balanceDiv);
         } catch (err) {
             handleError(err);
