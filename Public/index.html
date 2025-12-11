@@ -7,21 +7,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles-login.css">
+    <link rel="stylesheet" href="css/styles-index.css">
     <script src = "js/helpers.js"></script>
-    <script src = "js/nav-bar.js"></script>
-    <script defer src="js/login.js"></script>
+    <script src = "js/index.js"></script>
     <title>Simple_ATM</title>
  </head>
  <body>
     <main>
         <h1>Please Enter Your Credit Card Information</h1>
         <form id = "login-form"> 
-            <label for="fname">Card Number:</label>
-            <input type="text" name="cardnumber" placeholder="">
-            <label for="fname">PIN:</label>
-            <input type="text" name="pin" placeholder="">
+            <div class="form-row">
+                <label for="fname">Card Number:</label>
+                <input type="text" name="cardnumber" placeholder="">
+            </div>
+            <div class="form-row">
+                <label for="fname">PIN:</label>
+                <input type="text" name="pin" placeholder="">
+            </div>
             <div id="buttons-bar">
                 <button type="button" id="auth-button">Enter</button>
             </div>

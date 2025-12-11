@@ -5,8 +5,8 @@ const multer = require("multer");
 const mysql = require("promise-mysql");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
-const saltRounds = 12;
-const pinHash = await bcrypt.hash(pin, saltRounds);
+// const saltRounds = 12;
+// const pinHash = await bcrypt.hash(pin, saltRounds);
 
 // To handle different POST formats
 app.use(express.urlencoded({ extended: true }));

@@ -1,0 +1,53 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+h1 {
+    font-family: "Anton", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 80pt;
+    color: #0F084B;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+    font-size: 30pt;
+}
+
+.form-row label {
+    width:300px;           
+    font-weight: 500;
+}
+
+.form-row input {
+    flex: 1;
+    font-size: 18px;         
+    padding: 8px 10px;       
+    height: 36px;            
+    box-sizing: border-box;  
+}
+
+#buttons-bar {
+    margin-top: 15px;
+    text-align: center;      
+}
